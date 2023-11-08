@@ -20,29 +20,68 @@ def eliminar_tabla(tabla):
     except sqlite3.OperationalError:
         print(f"Lo sentimos, la tabla '{tabla}' no existe en la Base de Datos.")
     
-def listar_tabla(tabla):
+# def mostrar_tabla(tabla):
+#     try:
+#         conexion = sqlite3.connect("BD.db")
+#         cursor = conexion.cursor()
+
+#         # Intenta ejecutar una consulta SQL para obtener los datos de la tabla
+#         cursor.execute(f"SELECT * FROM {tabla}")
+
+#         # Obtén los resultados de la consulta
+#         resultados = cursor.fetchall()
+
+#         # Cierra la conexión con la base de datos
+#         conexion.close()
+#         print("   ID   Nombre                 Precio                Temporada")
+#         print("----------------------------------------------------------------------------")
+#         # Imprime los resultados
+#         for fila in resultados:
+#             print(f"|| {fila[0]:<2}|| {fila[1]:<20}|| {fila[2]:<20}|| {fila[3]:<20}||")
+
+#     except sqlite3.OperationalError:
+#         print(f"Lo sentimos, la tabla '{tabla}' no existe en la Base de Datos.")
+
+
+conexion = sqlite3.connect('BD.db')
+cursor = conexion.cursor()
+
+# tabla = 'frutas'
+
+# nombre_columna = 'KCAL'
+# tipo_de_dato = 'INTEGER'
+# sentencia_sql = f"ALTER TABLE {tabla} ADD COLUMN {nombre_columna} {tipo_de_dato}"
+
+
+# cursor.execute(f"SELECT * FROM FRUTAS")
+# print(cursor.fetchall())
+# conexion.commit()
+# conexion.close
+
+     
+
+def mostrar_tabla(tabla):
     try:
-        conexion = sqlite3.connect("BD.db")
-        cursor = conexion.cursor()
+        # Conectar a la base de datos
+        with sqlite3.connect("BD.db") as conexion:
+            cursor = conexion.cursor()
+            cursor.execute(f"SELECT * FROM {tabla}")
+            resultados = cursor.fetchall()
 
-        # Intenta ejecutar una consulta SQL para obtener los datos de la tabla
-        cursor.execute(f"SELECT * FROM {tabla}")
+            if not resultados:
+                print(f"No se encontraron registros en la tabla '{tabla}'.")
+            else:
+                # Imprimir encabezados
+                print("{:<5} {:<25} {:<25} {:<15}".format("||ID", " ||Nombre", "   ||Precio", "     ||Temporada"))
+                print("-" * 80)
+                for fila in resultados:
+                    print("||{:<5}|| {:<25}|| {:<25}|| {:<15}||".format(fila[0], fila[1], fila[2], fila[3]))
 
-        # Obtén los resultados de la consulta
-        resultados = cursor.fetchall()
-
-        # Cierra la conexión con la base de datos
-        conexion.close()
-        print("   ID   Nombre                 Precio                Temporada")
-        print("----------------------------------------------------------------------------")
-        # Imprime los resultados
-        for fila in resultados:
-            print(f"|| {fila[0]:<2}|| {fila[1]:<20}|| {fila[2]:<20}|| {fila[3]:<20}||")
-
-    except sqlite3.OperationalError:
+    except sqlite3.OperationalError as e:
+        print(f"Error: {e}")
         print(f"Lo sentimos, la tabla '{tabla}' no existe en la Base de Datos.")
 
-def listar_tabla_por_precio(tabla):
+def mostrar_tabla_por_precio(tabla):
     try:
         conexion = sqlite3.connect("BD.db")
         cursor = conexion.cursor()
@@ -112,31 +151,62 @@ def eliminar_registro_por_nombre(tabla, nombre):
     except sqlite3.OperationalError:
         print(f"Lo sentimos, la tabla {tabla} no existe en la Base de Datos.")  
         
+# def eliminar_registro_por_id(tabla, id):
+#     try:
+#         conexion = sqlite3.connect("BD.db")
+#         cursor = conexion.cursor()
+        
+#         cursor.execute(f"DELETE FROM {tabla} WHERE ID='{id}'")
+        
+#         # Obtén el número de filas afectadas por la operación DELETE
+#         filas_afectadas = cursor.rowcount
+        
+#         # Guardar cambios en la Base de Datos
+#         conexion.commit()
+        
+#         if filas_afectadas > 0:
+#             print(f"Registro eliminado.")
+#         else:
+#             print(f"No se encontró el registro en la tabla.")
+
+        
+#         conexion.close()
+        
+#     except sqlite3.OperationalError:
+#         print(f"Lo sentimos, la tabla {tabla} no existe en la Base de Datos.")  
+
 def eliminar_registro_por_id(tabla, id):
+    try:
+        # Conectar a la base de datos
+        with sqlite3.connect("BD.db") as conexion:
+            cursor = conexion.cursor()
+            cursor.execute(f"DELETE FROM {tabla} WHERE ID = ?", (id,))
+            filas_afectadas = cursor.rowcount
+            
+            if filas_afectadas > 0:
+                print("Registro eliminado.")
+            else:
+                print("No se encontró el registro en la tabla.")
+    
+    except sqlite3.OperationalError as e:
+        print(f"Error: {e}")
+
+def ejecutar_query(query):
+    query = query.upper()
     try:
         conexion = sqlite3.connect("BD.db")
         cursor = conexion.cursor()
         
-        cursor.execute(f"DELETE FROM {tabla} WHERE ID='{id}'")
-        
-        # Obtén el número de filas afectadas por la operación DELETE
-        filas_afectadas = cursor.rowcount
+        cursor.execute(f"{query}")
         
         # Guardar cambios en la Base de Datos
         conexion.commit()
-        
-        if filas_afectadas > 0:
-            print(f"Registro eliminado.")
-        else:
-            print(f"No se encontró el registro en la tabla.")
 
-        
         conexion.close()
         
     except sqlite3.OperationalError:
-        print(f"Lo sentimos, la tabla {tabla} no existe en la Base de Datos.")  
-
-
+        print(f"Lo sentimos, la ejecucion de la query '{query}' no es valida .")  
+    
 
 
 
