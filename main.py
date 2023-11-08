@@ -3,10 +3,10 @@ import sqlite
 
 # sqlite.ejecutar_query("select * from frutas")
 # Muestra la tabla que se le pase por parametro (string)
-sqlite.mostrar_tabla("frutas")
+sqlite.mostrar_tabla("FRUTOS_SECOS")  
 
 # LLama a la funcion insertar que recibe como parametros el nombre 
-# de la tabla el nombre, precio y temporada del alimento
+# de la tabla el nombre, precio y temporada del alimento  
 # sqlite.insertar_registro()
 
 # Llama a la funcion eliminar_registro_por_nombre que recibe por parametro el 

@@ -43,20 +43,28 @@ def eliminar_tabla(tabla):
 #         print(f"Lo sentimos, la tabla '{tabla}' no existe en la Base de Datos.")
 
 
-conexion = sqlite3.connect('BD.db')
-cursor = conexion.cursor()
-
-# tabla = 'frutas'
-
-# nombre_columna = 'KCAL'
-# tipo_de_dato = 'INTEGER'
-# sentencia_sql = f"ALTER TABLE {tabla} ADD COLUMN {nombre_columna} {tipo_de_dato}"
-
-
-# cursor.execute(f"SELECT * FROM FRUTAS")
+# conexion = sqlite3.connect('BD.db')
+# cursor = conexion.cursor()
+# cursor.execute("UPDATE 'FRUTOS_SECOS' SET 'Kcal./100Gr.' = 662 WHERE NOMBRE = 'PISTACHOS'")
 # print(cursor.fetchall())
+
+
+
+
+
+# # # tabla = 'frutas'
+
+# # # nombre_columna = 'KCAL'
+# # # tipo_de_dato = 'INTEGER'
+# # sentencia_sql = f"select * from frutas"
+
+
+# # cursor.execute(sentencia_sql)
+# # print(cursor.fetchall())
 # conexion.commit()
 # conexion.close
+
+
 
      
 
@@ -72,10 +80,12 @@ def mostrar_tabla(tabla):
                 print(f"No se encontraron registros en la tabla '{tabla}'.")
             else:
                 # Imprimir encabezados
-                print("{:<5} {:<25} {:<25} {:<15}".format("||ID", " ||Nombre", "   ||Precio", "     ||Temporada"))
+                print("{:<5} {:<30} {:<10} {:<10} {:<10} ".format("||ID", " || Nombre", "   || Precio", "   || Temporada", "|| Kcal./100Gr."))
                 print("-" * 80)
+                # print("{:<5} {:<20} {:<10} {:<20}".format("||ID", " ||Nombre", "   ||Precio", "    ||Temporada"))
+                # print("-" * 80)
                 for fila in resultados:
-                    print("||{:<5}|| {:<25}|| {:<25}|| {:<15}||".format(fila[0], fila[1], fila[2], fila[3]))
+                    print("||{:<5}|| {:<30}|| {:<10}|| {:<10}|| {:<10}|| ".format(fila[0], fila[1], fila[2], fila[3], fila[4]))
 
     except sqlite3.OperationalError as e:
         print(f"Error: {e}")
